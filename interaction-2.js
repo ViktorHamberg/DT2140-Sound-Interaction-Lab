@@ -10,9 +10,10 @@
 let dspNode = null;
 let dspNodeParams = null;
 let jsonParams = null;
+let aim = false;
 
 // Change here to ("tuono") depending on your wasm file name
-const dspName = "bells";
+const dspName = "torpedo";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
 // output to window or npm package module
@@ -25,7 +26,7 @@ if (typeof module === "undefined") {
 }
 
 // The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
-bells.createDSP(audioContext, 1024)
+torpedo.createDSP(audioContext, 1024)
     .then(node => {
         dspNode = node;
         dspNode.connect(audioContext.destination);
@@ -56,6 +57,11 @@ function accelerationChange(accx, accy, accz) {
 }
 
 function rotationChange(rotx, roty, rotz) {
+    if ((roty > 75.0 && roty < 105)||(roty < -75.0 && roty > -105)) {
+        aim = true;
+    } else {
+        aim = false;
+    }
 }
 
 function mousePressed() {
@@ -72,9 +78,11 @@ function deviceTurned() {
     threshVals[1] = turnAxis;
 }
 function deviceShaken() {
-    shaketimer = millis();
-    statusLabels[0].style("color", "pink");
-    playAudio();
+    if (aim) {
+        shaketimer = millis();
+        statusLabels[0].style("color", "pink");
+        playAudio();
+    }
 }
 
 function getMinMaxParam(address) {
@@ -102,8 +110,8 @@ function playAudio() {
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/englishBell/gate", 1)
-    setTimeout(() => { dspNode.setParamValue("/englishBell/gate", 0) }, 100);
+    dspNode.setParamValue("/torpedo/trigger", 1)
+    setTimeout(() => { dspNode.setParamValue("/englishBell/gate", 0) }, 10);
 }
 
 //==========================================================================================
