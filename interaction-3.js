@@ -52,7 +52,7 @@ churchBell.createDSP(audioContext, 1024)
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
-    if (accx > 2.0 || accy > 2.0 || accz > 2.0 || accx < -2.0 || accy < -2.0 || accz < -2.0) {
+    if (accx > 2.0 || accx < -2.0) { //|| accy > 2.0 || accz > 2.0 || accx < -2.0 || accy < -2.0 || accz < -2.0) {
         playAudio();
     }
 }
@@ -97,7 +97,7 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio(pressure) {
+function playAudio() {
     if (!dspNode) {
         return;
     }
