@@ -52,7 +52,7 @@ churchBell.createDSP(audioContext, 1024)
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
-    if (accx > 4.0 || accy > 4.0 || accz > 4.0) {
+    if (accx > 2.0 || accy > 2.0 || accz > 2.0 || accx < -2.0 || accy < -2.0 || accz < -2.0) {
         playAudio();
     }
 }
