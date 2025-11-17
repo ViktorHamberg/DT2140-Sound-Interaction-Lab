@@ -110,8 +110,9 @@ function playAudio() {
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/torpedo/trigger", 1)
-    setTimeout(() => { dspNode.setParamValue("/englishBell/gate", 0) }, 10);
+    dspNode.setParamValue("/torpedo/trigger", 0.5)
+    setTimeout(() => { dspNode.setParamValue("/torpedo/trigger", 1) }, 10);
+    setTimeout(() => { dspNode.setParamValue("/torpedo/trigger", 0) }, 10);
 }
 
 //==========================================================================================
