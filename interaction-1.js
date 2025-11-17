@@ -12,7 +12,7 @@ let dspNodeParams = null;
 let jsonParams = null;
 
 // Change here to ("tuono") depending on your wasm file name
-const dspName = "tuono";
+const dspName = "engine";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
 // output to window or npm package module
@@ -25,7 +25,7 @@ if (typeof module === "undefined") {
 }
 
 // The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
-tuono.createDSP(audioContext, 1024)
+engine.createDSP(audioContext, 1024)
     .then(node => {
         dspNode = node;
         dspNode.connect(audioContext.destination);
@@ -56,6 +56,9 @@ function accelerationChange(accx, accy, accz) {
 }
 
 function rotationChange(rotx, roty, rotz) {
+    if (roty < -30.0) {
+        playAudio()
+    }
 }
 
 function mousePressed() {
@@ -106,8 +109,13 @@ function playAudio() {
     // them printed on the console of your browser when you load the page)
     // For example if you change to a bell sound, here you could use "/churchBell/gate" instead of
     // "/thunder/rumble".
-    dspNode.setParamValue("/thunder/rumble", 1)
-    setTimeout(() => { dspNode.setParamValue("/thunder/rumble", 0) }, 100);
+    dspNode.setParamValue("/engine/runtime", 2.0)
+    dspNode.setParamValue("/engine/volume", 0.5)
+    dspNode.setParamValue("/engine/tuberes", 0.4)
+    dspNode.setParamValue("/engine/maxSpeed", 0.3)
+    dspNode.setParamValue("/engine/gate", 1)
+    setTimeout(() => { dspNode.setParamValue("/engine/gate", 0) }, 300);
+
 }
 
 //==========================================================================================
